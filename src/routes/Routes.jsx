@@ -2,9 +2,35 @@ import { Outlet, Link } from "react-router-dom";
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import './Routes.css'
+import {
+  Navigate
+} from 'react-router-dom';
+import MarkerArApp from '../components/MarkerArApp/MarkerArApp.jsx'
+import ContactUs from '../components/ContactUs/ContactUs.jsx'
+
+const Routes = [
+  {
+    path: "/",
+    element: <RoutesNavbar />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/marker-app" replace />
+      },
+      {
+        path: 'marker-app',
+        element: <MarkerArApp />
+      },
+      {
+        path: "contact-us",
+        element: <ContactUs />
+      }
+    ]
+  }
+];
 
 // Navigation bar
-function Routes() {
+function RoutesNavbar() {
     return (
       <>
         <section id="container-root">
@@ -23,7 +49,7 @@ function Routes() {
             <nav>
               <ul>
                 <li>
-                    <Link to={`app`}>App</Link>
+                    <Link to={`marker-app`}>Marker App</Link>
                 </li>
                 <li>
                     <Link to={`contact-us`}>Contact Us</Link>
