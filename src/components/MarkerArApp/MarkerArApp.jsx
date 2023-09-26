@@ -1,22 +1,17 @@
-import './MarkerArApp.css';
-
-// function MarkerArApp() {
-//     return (
-//         <>
-//             <div className="marker-app-container">
-//             </div>
-//         </>
-//     )
-// }
-// export default MarkerArApp
-
 import React from 'react'
 import { ArToolkitProfile, ArToolkitSource, ArToolkitContext, ArMarkerControls} from '@ar-js-org/ar.js/three.js/build/ar-threex.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import * as THREE from 'three';
+import './MarkerArApp.css';
 
 export default class ThreexComp extends React.Component {
 
-    componentDidMount() {
+    async loaderObject3D(path) {
+        var loader = new FBXLoader();
+        return loader.loadAsync(path);
+    }
+
+    async componentDidMount() {
         ArToolkitContext.baseURL = './'
         // init renderer
 	    var renderer	= new THREE.WebGLRenderer({
@@ -144,25 +139,33 @@ export default class ThreexComp extends React.Component {
 	    markerScene.add(axes)
 
 	    // add a torus knot
-	    var geometry	= new THREE.BoxGeometry(1,1,1);
-	    var material	= new THREE.MeshNormalMaterial({
-		    transparent : true,
-		    opacity: 0.5,
-		    side: THREE.DoubleSide
-	    });
-	    var mesh	= new THREE.Mesh( geometry, material );
-	    mesh.position.y	= geometry.parameters.height/2
-	    markerScene.add(mesh)
+	    // var geometry	= new THREE.BoxGeometry(1,1,1);
+	    // var material	= new THREE.MeshNormalMaterial({
+		//     transparent : true,
+		//     opacity: 0.5,
+		//     side: THREE.DoubleSide
+	    // });
+	    // var mesh	= new THREE.Mesh( geometry, material );
+	    // mesh.position.y	= geometry.parameters.height/2
+	    // markerScene.add(mesh)
 
-	    var tgeometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	    var tmaterial	= new THREE.MeshNormalMaterial();
-	    var torus	= new THREE.Mesh( tgeometry, tmaterial );
-	    torus.position.y	= 0.5
-	    markerScene.add( torus );
+	    // var tgeometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	    // var tmaterial	= new THREE.MeshNormalMaterial();
+	    // var torus	= new THREE.Mesh( tgeometry, tmaterial );
+	    // torus.position.y	= 0.5
+	    // markerScene.add( torus );
 
-	    onRenderFcts.push(function(delta){
-		    torus.rotation.x += delta * Math.PI
-	    })
+        const objectModel3D = await this.loaderObject3D(ArToolkitContext.baseURL + '../data/dragon.fbx');
+        objectModel3D.scale.set(.01, .01, .01);
+        objectModel3D.position.x = 0.2;
+        objectModel3D.position.y = 0.2;
+        console.log('visible icon of type ', typeof(objectModel3D), ' placed at ', objectModel3D.position);
+
+        markerScene.add(objectModel3D);
+
+        onRenderFcts.push(function(delta){
+            objectModel3D.rotation.x += delta * Math.PI
+        });
 
         //////////////////////////////////////////////////////////////////////////////////
 	    //		render the whole thing on the page
@@ -182,7 +185,7 @@ export default class ThreexComp extends React.Component {
 		    lastTimeMsec	= nowMsec
 		    // call each update function
 		    onRenderFcts.forEach(function(onRenderFct){
-			    onRenderFct(deltaMsec/1000, nowMsec/1000)
+                onRenderFct(deltaMsec/1000, nowMsec/1000)
 		    })
 	    })
     }
