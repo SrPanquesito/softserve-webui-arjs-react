@@ -1,4 +1,4 @@
-function App() {
+function MainApp() {
   return (
     <>
       <span>Aqui ira el AR.js container :)</span>
@@ -6,4 +6,4 @@ function App() {
   )
 }
 
-export default App
+export default MainApp

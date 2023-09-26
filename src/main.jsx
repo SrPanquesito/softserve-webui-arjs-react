@@ -5,15 +5,15 @@ import {
   RouterProvider,
   Navigate
 } from 'react-router-dom';
-import Root from './routes/Root.jsx'
-import App from './components/App/App.jsx'
+import Routes from './routes/Routes.jsx'
+import MainApp from './components/MainApp/MainApp.jsx'
 import ContactUs from './components/ContactUs/ContactUs.jsx'
-import './index.css'
+import './main.css'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <Routes />,
     children: [
       {
         index: true,
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: "app",
-        element: <App />,
+        element: <MainApp />,
       },
       {
         path: "contact-us",

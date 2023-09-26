@@ -1,10 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
-import './Root.css'
+import './Routes.css'
 
 // Navigation bar
-function Root() {
+function Routes() {
     return (
       <>
         <section id="container-root">
@@ -44,4 +44,4 @@ function Root() {
     )
 }
 
-export default Root
+export default Routes
