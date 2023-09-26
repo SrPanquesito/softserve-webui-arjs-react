@@ -1,23 +1,15 @@
-import './MarkerArApp.css';
-
-// function MarkerArApp() {
-//     return (
-//         <>
-//             <div className="marker-app-container">
-//             </div>
-//         </>
-//     )
-// }
-// export default MarkerArApp
-
 import React from 'react'
 import { ArToolkitProfile, ArToolkitSource, ArToolkitContext, ArMarkerControls} from '@ar-js-org/ar.js/three.js/build/ar-threex.js';
 import * as THREE from 'three';
+import './MarkerArApp.css';
 
 export default class ThreexComp extends React.Component {
 
     componentDidMount() {
         ArToolkitContext.baseURL = './'
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        console.warn('window dimensions: ', windowWidth, windowHeight);
         // init renderer
 	    var renderer	= new THREE.WebGLRenderer({
 		    // antialias	: true,
@@ -25,7 +17,7 @@ export default class ThreexComp extends React.Component {
 	    });
 	    renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	    // renderer.setPixelRatio( 2 );
-	    renderer.setSize(640, 480);
+	    renderer.setSize(windowWidth, windowHeight);
 	    renderer.domElement.style.position = 'absolute'
 	    renderer.domElement.style.top = '0px'
 	    renderer.domElement.style.left = '0px'
@@ -44,11 +36,20 @@ export default class ThreexComp extends React.Component {
 
 	    // Create a camera
 	    var camera = new THREE.Camera();
+        // var camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000 );
 	    scene.add(camera);
         const artoolkitProfile = new ArToolkitProfile()
 	    artoolkitProfile.sourceWebcam()
 
-	    const arToolkitSource = new ArToolkitSource(artoolkitProfile.sourceParameters)
+	    const arToolkitSource = new ArToolkitSource({
+            sourceType: 'webcam',
+            // resolution of at which we initialize the source image
+            sourceWidth: windowWidth,
+            sourceHeight: windowHeight,
+            // resolution displayed for the source
+            displayWidth: windowWidth,
+            displayHeight: windowHeight
+        })
 
         arToolkitSource.init(function onReady(){
 			initARContext();
@@ -189,12 +190,12 @@ export default class ThreexComp extends React.Component {
 
     render() {
         return (
-            <div className="marker-app-container">
+            <div>
                 <div 
-                    style={{ width: "800px", height: "800px" }}
+                    className="marker-app-container"
                     ref={mount => { this.mount = mount}}
                 />
             </div>
         )
-    }       
+    }
 }
