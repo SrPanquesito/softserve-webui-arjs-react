@@ -21,6 +21,7 @@ export default class ThreexComp extends React.Component {
 	    renderer.domElement.style.position = 'absolute'
 	    renderer.domElement.style.top = '0px'
 	    renderer.domElement.style.left = '0px'
+	    renderer.domElement.style.zIndex = '-1'
 	    document.body.appendChild( renderer.domElement );
 
 	    // array of functions for the rendering loop
@@ -191,7 +192,7 @@ export default class ThreexComp extends React.Component {
     render() {
         return (
             <div>
-                <div 
+                <div
                     className="marker-app-container"
                     ref={mount => { this.mount = mount}}
                 />
